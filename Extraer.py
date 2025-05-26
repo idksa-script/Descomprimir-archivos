@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys  # Manejo de argumentos desde la línea de comandos
 import os  # Operaciones con el sistema de archivos
 import zipfile  # Para manejar archivos ZIP
@@ -32,8 +34,8 @@ nombreArchivo = sys.argv[1]
 nombreBase, extencion = os.path.splitext(nombreArchivo)  # Separa el nombre y la extensión
 
 # Crea una carpeta para la extracción con el nombre del archivo (sin extensión)
-directorioTemporal = os.path.dirname(os.path.abspath(__file__))
-rutaCarpeta = os.path.join(directorioTemporal, nombreBase)
+directorioActual = os.getcwd()
+rutaCarpeta = os.path.join(directorioActual, nombreBase)
 
 try: 
     os.makedirs(rutaCarpeta)  # Crea la carpeta si no existe
