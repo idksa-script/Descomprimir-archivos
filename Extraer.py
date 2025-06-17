@@ -5,14 +5,16 @@ import os  # Operaciones con el sistema de archivos
 import zipfile  # Para manejar archivos ZIP
 import rarfile  # Para manejar archivos RAR
 from tqdm import tqdm # Para la barra de tareas
+import time
 
 # Función para extraer archivos ZIP
 def extraerZip(archivo, carpeta):
     try: 
         with zipfile.ZipFile(archivo, "r") as archivo:
-            print("Extrayendo {archivo}")
+            print(f"Extrayendo {archivo}")
             for member in tqdm(archivo.infolist(), desc="Extracting "):
                     archivo.extract(member)
+                    time.sleep(0.1)
             print("Archivo descomprimido con exito!!")
     except:
         print("Erro al extraer el archivo")
@@ -26,9 +28,11 @@ def extraerRar(archivo, carpeta):
                 password = input("Ingresa la contraseña: ")
                 for member in tqdm(archivo.infolist(), desc="Extracting"):
                     archivo.extract(member, pwd=password)
+                    time.sleep(0.1)
             else:
                 for member in tqdm(archivo.infolist(), desc="Extracting"):
                     archivo.extract(member)
+                    time.sleep(0.1)
 
         print("Archivo descomprimido con éxito!!")
     except rarfile.Error:
