@@ -4,23 +4,32 @@ import sys  # Manejo de argumentos desde la línea de comandos
 import os  # Operaciones con el sistema de archivos
 import zipfile  # Para manejar archivos ZIP
 import rarfile  # Para manejar archivos RAR
+from tqdm import tqdm # Para la barra de tareas
 
 # Función para extraer archivos ZIP
 def extraerZip(archivo, carpeta):
-    try:
+    try: 
         with zipfile.ZipFile(archivo, "r") as archivo:
-            archivo.extractall(carpeta)  # Extrae todo el contenido
-        print("Archivo descomprimido con éxito!!")
-    except zipfile.BadZipFile:
-        print("Error: no es un archivo ZIP válido")
+            print("Extrayendo {archivo}")
+            for member in tqdm(archivo.infolist(), desc="Extracting "):
+                    archivo.extract(member)
+            print("Archivo descomprimido con exito!!")
+    except:
+        print("Erro al extraer el archivo")
 
 # Función para extraer archivos RAR
 def extraerRar(archivo, carpeta):
     try:
         with rarfile.RarFile(archivo, "r") as archivo:
+            print(f"Extrayendo {archivo}")
             if archivo.needs_password():  # Comprueba si necesita contraseña
                 password = input("Ingresa la contraseña: ")
-                archivo.extractall(carpeta, pwd=password)  # Extrae con contraseña
+                for member in tqdm(archivo.infolist(), desc="Extracting"):
+                    archivo.extract(member, pwd=password)
+            else:
+                for member in tqdm(archivo.infolist(), desc="Extracting"):
+                    archivo.extract(member)
+
         print("Archivo descomprimido con éxito!!")
     except rarfile.Error:
         print("Error: no es un archivo RAR válido")
